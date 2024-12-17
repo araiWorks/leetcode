@@ -12,17 +12,13 @@ class Solution {
      * @return Integer
      */
     function firstUniqChar($s) {
-        $wordArray = str_split($s);
-        $repeatedLetters = [];
-        for ($i = 0; $i < count($wordArray); $i++) {
-            if (in_array($wordArray[$i],$repeatedLetters)) {
-                continue;
-            }
-            $keys = array_keys($wordArray, $wordArray[$i]);
-            if (count($keys) === 1) {
+        $alpha = [];
+        for ($i = 0; $i < strlen($s); $i++) {
+            $alpha[$s[$i]]++;
+        }
+        for ($i = 0; $i < strlen($s); $i++) {
+            if ($alpha[$s[$i]] === 1) {
                 return $i;
-            } else if (count($keys) > 1) {
-                $repeatedLetters[] = $wordArray[$i];
             }
         }
         return -1;
