@@ -12,25 +12,27 @@ class Solution {
      * @return Boolean
      */
     function isValid($s) {
-        $count = strlen($s);
-        if ($count%2 === 1) {
-            return false;
-        }
-        $brackets = ['[]', '()', '{}'];
-        while(strlen($s)/2 > 0) {
-            foreach($brackets as $bracket) {
-                if (str_contains($s, $bracket)) {
-                    $s = str_replace($bracket, '', $s);
-                    if (strlen($s) === 0) {
-                        return true;
-                    }
+        $map  = [
+            ")" => "(", 
+            "]" => "[", 
+            "}" => "{",
+        ];
+        $stack = [];
+        for ($i = 0; $i < strlen($s); $i++) {
+            $current = $s[$i];
+            $mappedClosing = $map[$current] ?? null;
+            if (empty($mappedClosing)) {
+                $stack[] = $current;
+            } else {
+                $lastStacked = end($stack);
+                if ($lastStacked === $mappedClosing) {
+                    array_pop($stack);
+                } else {
+                    $stack[] = $current;
                 }
             }
-            if (strlen($s) === $count || strlen($s) === $prevLength) {
-                return false;
-            }
-            $prevLength = strlen($s);
         }
+        return empty($stack);
     }
 }
 // @lc code=end
